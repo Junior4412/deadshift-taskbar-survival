@@ -46,7 +46,13 @@ function configureUpdates() {
   autoUpdater.on('update-available', info => updateStatus('downloading', info.version));
   autoUpdater.on('update-not-available', () => updateStatus('current', app.getVersion()));
   autoUpdater.on('download-progress', p => updateStatus('progress', String(Math.round(p.percent))));
-  autoUpdater.on('update-downloaded', info => updateStatus('ready', info.version));
+  autoUpdater.on('update-downloaded', info => {
+    updateStatus('ready', info.version);
+    setTimeout(() => {
+      updateStatus('installing', info.version);
+      autoUpdater.quitAndInstall(true, true);
+    }, 3000);
+  });
   autoUpdater.on('error', () => updateStatus('error', 'Servidor de atualização temporariamente indisponível.'));
   setTimeout(() => autoUpdater.checkForUpdates().catch(() => updateStatus('error', 'Servidor de atualização temporariamente indisponível.')), 3500);
 }
@@ -55,7 +61,7 @@ ipcMain.on('window-mode', (_, mode) => place(mode === 'expanded' ? 'expanded' : 
 ipcMain.on('window-minimize', () => win.minimize());
 ipcMain.on('window-close', () => win.close());
 ipcMain.on('window-pin', (_, value) => win.setAlwaysOnTop(Boolean(value)));
-ipcMain.on('install-update', () => autoUpdater.quitAndInstall(false, true));
+ipcMain.on('install-update', () => autoUpdater.quitAndInstall(true, true));
 ipcMain.handle('app-version', () => app.getVersion());
 ipcMain.handle('save-export',async(_,content)=>{let result=await dialog.showSaveDialog(win,{title:'Compartilhar save do Deadshift',defaultPath:`Deadshift-Save-${new Date().toISOString().slice(0,10)}.deadshift`,filters:[{name:'Save do Deadshift',extensions:['deadshift']},{name:'JSON',extensions:['json']}]});if(result.canceled||!result.filePath)return null;fs.writeFileSync(result.filePath,content,'utf8');return result.filePath});
 ipcMain.handle('save-import',async()=>{let result=await dialog.showOpenDialog(win,{title:'Importar save do Deadshift',properties:['openFile'],filters:[{name:'Save do Deadshift',extensions:['deadshift','json']}]});if(result.canceled||!result.filePaths[0])return null;return fs.readFileSync(result.filePaths[0],'utf8')});

@@ -1,6 +1,6 @@
 {
   "name": "deadshift-taskbar",
-  "version": "3.9.0",
+  "version": "3.10.0",
   "description": "RPG idle de sobrevivência zumbi para a barra de tarefas",
   "author": "Junior4412",
   "main": "main.js",
@@ -34,7 +34,9 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
     },
     "publish": [
       {
