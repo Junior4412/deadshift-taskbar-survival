@@ -9,6 +9,18 @@ let updatePollTimer = null;
 let automaticUpdatesEnabled = true;
 const UPDATE_POLL_INTERVAL = 5 * 60 * 1000;
 const sizes = { compact: { width: 920, height: 240 }, expanded: { width: 1120, height: 720 } };
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
+if (!hasSingleInstanceLock) app.quit();
+
+function restoreWindow() {
+  if (!win || win.isDestroyed()) return;
+  if (win.isMinimized()) win.restore();
+  if (!win.isVisible()) win.show();
+  win.setSkipTaskbar(false);
+  win.moveTop();
+  win.focus();
+  win.flashFrame(false);
+}
 
 function place(mode = 'compact') {
   const area = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).workArea;
@@ -23,6 +35,8 @@ function createWindow() {
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, backgroundThrottling: false }
   });
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
+  win.on('restore', () => setTimeout(restoreWindow, 30));
+  win.on('show', () => win.setSkipTaskbar(false));
   win.once('ready-to-show', async () => {
     const visualTest = process.argv.includes('--screenshot');
     place(visualTest ? 'expanded' : 'compact'); win.show();
@@ -75,7 +89,7 @@ function configureUpdates() {
 }
 
 ipcMain.on('window-mode', (_, mode) => place(mode === 'expanded' ? 'expanded' : 'compact'));
-ipcMain.on('window-minimize', () => win.minimize());
+ipcMain.on('window-minimize', () => { if (win && !win.isDestroyed()) win.minimize(); });
 ipcMain.on('window-close', () => win.close());
 ipcMain.on('window-pin', (_, value) => win.setAlwaysOnTop(Boolean(value)));
 ipcMain.on('set-auto-update', (_, value) => {
@@ -103,6 +117,8 @@ ipcMain.handle('check-update', async () => {
 });
 ipcMain.handle('save-export',async(_,content)=>{let result=await dialog.showSaveDialog(win,{title:'Compartilhar save do Deadshift',defaultPath:`Deadshift-Save-${new Date().toISOString().slice(0,10)}.deadshift`,filters:[{name:'Save do Deadshift',extensions:['deadshift']},{name:'JSON',extensions:['json']}]});if(result.canceled||!result.filePath)return null;fs.writeFileSync(result.filePath,content,'utf8');return result.filePath});
 ipcMain.handle('save-import',async()=>{let result=await dialog.showOpenDialog(win,{title:'Importar save do Deadshift',properties:['openFile'],filters:[{name:'Save do Deadshift',extensions:['deadshift','json']}]});if(result.canceled||!result.filePaths[0])return null;return fs.readFileSync(result.filePaths[0],'utf8')});
-app.whenReady().then(() => { createWindow(); configureUpdates(); });
+app.on('second-instance', restoreWindow);
+app.whenReady().then(() => { if (hasSingleInstanceLock) { createWindow(); configureUpdates(); } });
+app.on('activate', restoreWindow);
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', () => { if (updatePollTimer) clearInterval(updatePollTimer); });
