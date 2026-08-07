@@ -1,6 +1,6 @@
 {
   "name": "deadshift-taskbar",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "RPG idle de sobrevivência zumbi para a barra de tarefas",
   "author": "Junior4412",
   "main": "main.js",
