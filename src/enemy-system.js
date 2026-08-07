@@ -3,5 +3,7 @@ const DEFS={walker:{hp:34,atk:5,speed:13,reward:7,trait:'normal'},runner:{hp:24,
 function unlocked(pool,level){return pool.slice(0,Math.min(pool.length,1+Math.ceil(level/3)))}
 function select(pool,level,random=Math.random){let choices=unlocked(pool,level);return choices[Math.min(choices.length-1,Math.floor(random()*choices.length))]}
 function damageTaken(enemy,damage){let trait=enemy?.trait||DEFS[enemy?.type]?.trait||'';if(trait.includes('armored'))damage*=.62;if(trait==='phase'&&enemy.phaseOn)damage*=.25;return damage}
-return{DEFS,unlocked,select,damageTaken};
+function spawnX(width,random=Math.random){let w=Math.max(400,Number(width)||920);return Math.min(w-20,Math.max(430,w*.57)+random()*70)}
+function attackReach(trait='normal'){return trait==='toxic'?165:trait.includes('flying')?110:trait==='phase'?80:trait==='boss'?60:trait.includes('fire')?48:25}
+return{DEFS,unlocked,select,damageTaken,spawnX,attackReach};
 });
