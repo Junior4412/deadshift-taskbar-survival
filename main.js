@@ -5,6 +5,8 @@ const { autoUpdater } = require('electron-updater');
 
 let win;
 let updateCheckInFlight = false;
+let updatePollTimer = null;
+const UPDATE_POLL_INTERVAL = 5 * 60 * 1000;
 const sizes = { compact: { width: 920, height: 240 }, expanded: { width: 1120, height: 720 } };
 
 function place(mode = 'compact') {
@@ -39,15 +41,27 @@ function updateStatus(status, detail = '') {
   if (win && !win.isDestroyed()) win.webContents.send('update-status', { status, detail });
 }
 
+async function checkUpdatesSafely() {
+  if (!app.isPackaged || updateCheckInFlight) return;
+  updateCheckInFlight = true;
+  try {
+    await autoUpdater.checkForUpdates();
+  } catch {
+    updateCheckInFlight = false;
+    updateStatus('error', 'Servidor de atualização temporariamente indisponível.');
+  }
+}
+
 function configureUpdates() {
   if (!app.isPackaged) return;
   autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = true;
   autoUpdater.on('checking-for-update', () => { updateCheckInFlight = true; updateStatus('checking'); });
-  autoUpdater.on('update-available', info => { updateCheckInFlight = false; updateStatus('downloading', info.version); });
+  autoUpdater.on('update-available', info => { updateCheckInFlight = true; updateStatus('downloading', info.version); });
   autoUpdater.on('update-not-available', () => { updateCheckInFlight = false; updateStatus('current', app.getVersion()); });
   autoUpdater.on('download-progress', p => updateStatus('progress', String(Math.round(p.percent))));
   autoUpdater.on('update-downloaded', info => {
+    updateCheckInFlight = false;
     updateStatus('ready', info.version);
     setTimeout(() => {
       updateStatus('installing', info.version);
@@ -55,7 +69,8 @@ function configureUpdates() {
     }, 3000);
   });
   autoUpdater.on('error', () => { updateCheckInFlight = false; updateStatus('error', 'Servidor de atualização temporariamente indisponível.'); });
-  setTimeout(() => autoUpdater.checkForUpdates().catch(() => updateStatus('error', 'Servidor de atualização temporariamente indisponível.')), 3500);
+  setTimeout(checkUpdatesSafely, 3500);
+  updatePollTimer = setInterval(checkUpdatesSafely, UPDATE_POLL_INTERVAL);
 }
 
 ipcMain.on('window-mode', (_, mode) => place(mode === 'expanded' ? 'expanded' : 'compact'));
@@ -82,3 +97,4 @@ ipcMain.handle('save-export',async(_,content)=>{let result=await dialog.showSave
 ipcMain.handle('save-import',async()=>{let result=await dialog.showOpenDialog(win,{title:'Importar save do Deadshift',properties:['openFile'],filters:[{name:'Save do Deadshift',extensions:['deadshift','json']}]});if(result.canceled||!result.filePaths[0])return null;return fs.readFileSync(result.filePaths[0],'utf8')});
 app.whenReady().then(() => { createWindow(); configureUpdates(); });
 app.on('window-all-closed', () => app.quit());
+app.on('before-quit', () => { if (updatePollTimer) clearInterval(updatePollTimer); });
