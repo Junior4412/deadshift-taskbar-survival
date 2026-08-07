@@ -1,6 +1,6 @@
-const { app, BrowserWindow, ipcMain, screen } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, ipcMain, screen, dialog } = require('electron');
 const fs = require('fs');
+const path = require('path');
 const { autoUpdater } = require('electron-updater');
 
 let win;
@@ -57,5 +57,7 @@ ipcMain.on('window-close', () => win.close());
 ipcMain.on('window-pin', (_, value) => win.setAlwaysOnTop(Boolean(value)));
 ipcMain.on('install-update', () => autoUpdater.quitAndInstall(false, true));
 ipcMain.handle('app-version', () => app.getVersion());
+ipcMain.handle('save-export',async(_,content)=>{let result=await dialog.showSaveDialog(win,{title:'Compartilhar save do Deadshift',defaultPath:`Deadshift-Save-${new Date().toISOString().slice(0,10)}.deadshift`,filters:[{name:'Save do Deadshift',extensions:['deadshift']},{name:'JSON',extensions:['json']}]});if(result.canceled||!result.filePath)return null;fs.writeFileSync(result.filePath,content,'utf8');return result.filePath});
+ipcMain.handle('save-import',async()=>{let result=await dialog.showOpenDialog(win,{title:'Importar save do Deadshift',properties:['openFile'],filters:[{name:'Save do Deadshift',extensions:['deadshift','json']}]});if(result.canceled||!result.filePaths[0])return null;return fs.readFileSync(result.filePaths[0],'utf8')});
 app.whenReady().then(() => { createWindow(); configureUpdates(); });
 app.on('window-all-closed', () => app.quit());

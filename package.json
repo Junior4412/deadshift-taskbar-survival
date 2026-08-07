@@ -1,12 +1,12 @@
 {
   "name": "deadshift-taskbar",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "RPG idle de sobrevivência zumbi para a barra de tarefas",
   "author": "Junior4412",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node --test tests/*.test.js && node --check main.js && node --check preload.js && node --check src/game.js && node --check src/progression-system.js && node --check src/recommendation-system.js && node --check src/pet-system.js && node --check src/campaign-system.js && node --check src/rune-system.js && node --check src/cube-system.js && node --check src/farming-system.js && node --check src/patch-notes.js && node --check src/offline-system.js",
+    "test": "node --test tests/*.test.js && node --check main.js && node --check preload.js && node --check src/game.js && node --check src/save-system.js && node --check src/progression-system.js && node --check src/recommendation-system.js && node --check src/pet-system.js && node --check src/campaign-system.js && node --check src/rune-system.js && node --check src/cube-system.js && node --check src/farming-system.js && node --check src/patch-notes.js && node --check src/offline-system.js",
     "build": "electron-builder --win nsis"
   },
   "devDependencies": {
