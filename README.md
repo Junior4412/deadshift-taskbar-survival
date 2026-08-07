@@ -19,6 +19,8 @@ RPG idle original de sobrevivência zumbi para Windows, projetado para permanece
 - Árvores individuais de talentos para cada sobrevivente
 - Árvore geral de expedição para baús, dano, velocidade e progresso offline
 - Três categorias de baús com abertura animada
+- Equipamentos visíveis diretamente nos personagens durante o combate
+- Abrigo evolutivo: muralhas, torre, enfermaria e coleta alteram sua aparência
 
 ## Executar
 

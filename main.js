@@ -23,7 +23,7 @@ function createWindow() {
     place(visualTest ? 'expanded' : 'compact'); win.show();
     if (visualTest) {
       setTimeout(async () => {
-        await win.webContents.executeJavaScript("document.body.className='expanded'; document.querySelector('#dashboard').style.display='flex'; document.querySelector('#combat').style.height='137px'; document.querySelector('[data-tab=skills]')?.click()").catch(()=>{});
+        await win.webContents.executeJavaScript("document.body.className='expanded'; document.querySelector('#dashboard').style.display='flex'; document.querySelector('#combat').style.height='137px'; window.__seedVisualTest?.(); document.querySelector('[data-tab=squad]')?.click()").catch(()=>{});
         await new Promise(resolve => setTimeout(resolve, 300));
         const png = (await win.webContents.capturePage()).toPNG();
         fs.writeFileSync(path.join(__dirname, 'outputs', 'visual-test.png'), png);
