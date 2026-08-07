@@ -18,8 +18,9 @@ const NODES=[
 function ensure(s){s.runes=s.runes||{};s.runePoints=Number(s.runePoints||0);return s}
 function node(id){return NODES.find(n=>n.id===id)}
 function unlocked(s,n){ensure(s);return n.requires.every(id=>Number(s.runes[id]||0)>0)}
-function cost(s,id){let n=node(id),rank=Number(s.runes[id]||0);return n?n.cost+rank:Infinity}
+function cost(s,id){let n=typeof id==='string'?node(id):id,rank=n?Number(s.runes[n.id]||0):0;return n?n.cost+rank:Infinity}
+function available(s){ensure(s);return NODES.filter(n=>unlocked(s,n)&&Number(s.runes[n.id]||0)<n.max&&s.runePoints>=cost(s,n))}
 function buy(s,id){ensure(s);let n=node(id),rank=Number(s.runes[id]||0),price=cost(s,id);if(!n||rank>=n.max||!unlocked(s,n)||s.runePoints<price)return false;s.runePoints-=price;s.runes[id]=rank+1;return true}
 function bonuses(s){ensure(s);let out={attack:0,hp:0,rate:0,crit:0,scrap:0,regen:0,offline:0,chest:0,cube:0,elite:0,targetLoot:0};for(const n of NODES){let v=Number(s.runes[n.id]||0)*n.value;if(n.stat==='all'){out.attack+=v;out.hp+=v;out.rate+=v}else out[n.stat]=(out[n.stat]||0)+v}return out}
-return{NODES,ensure,node,unlocked,cost,buy,bonuses};
+return{NODES,ensure,node,unlocked,cost,available,buy,bonuses};
 });
