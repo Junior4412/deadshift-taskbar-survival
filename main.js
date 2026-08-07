@@ -15,8 +15,16 @@ if (!hasSingleInstanceLock) app.quit();
 function restoreWindow() {
   if (!win || win.isDestroyed()) return;
   if (win.isMinimized()) win.restore();
+  const bounds = win.getBounds();
+  const visible = screen.getAllDisplays().some(display => {
+    const area = display.workArea;
+    return bounds.x < area.x + area.width && bounds.x + bounds.width > area.x && bounds.y < area.y + area.height && bounds.y + bounds.height > area.y;
+  });
+  if (!visible) place('compact');
   if (!win.isVisible()) win.show();
+  win.setOpacity(1);
   win.setSkipTaskbar(false);
+  win.setAlwaysOnTop(win.isAlwaysOnTop(), 'floating');
   win.moveTop();
   win.focus();
   win.flashFrame(false);
@@ -29,6 +37,7 @@ function place(mode = 'compact') {
 }
 
 function createWindow() {
+  let launchFinished = false;
   win = new BrowserWindow({
     ...sizes.compact, frame: false, transparent: true, resizable: false, alwaysOnTop: true,
     skipTaskbar: false, show: false, backgroundColor: '#00000000',
@@ -37,9 +46,15 @@ function createWindow() {
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   win.on('restore', () => setTimeout(restoreWindow, 30));
   win.on('show', () => win.setSkipTaskbar(false));
-  win.once('ready-to-show', async () => {
+  const finishLaunch = async () => {
+    if (launchFinished || !win || win.isDestroyed()) return;
+    launchFinished = true;
     const visualTest = process.argv.includes('--screenshot');
-    place(visualTest ? 'expanded' : 'compact'); win.show();
+    place(visualTest ? 'expanded' : 'compact');
+    win.setOpacity(1);
+    win.show();
+    win.setSkipTaskbar(false);
+    win.focus();
     if (visualTest) {
       setTimeout(async () => {
         await win.webContents.executeJavaScript("document.body.className='expanded'; document.querySelector('#dashboard').style.display='flex'; document.querySelector('#combat').style.height='137px'; window.__seedVisualTest?.(); document.querySelector('[data-tab=squad]')?.click(); window.__showOfflineTest?.()").catch(()=>{});
@@ -49,7 +64,12 @@ function createWindow() {
         app.quit();
       }, 1800);
     }
-  });
+  };
+  win.once('ready-to-show', finishLaunch);
+  win.webContents.once('did-finish-load', () => setTimeout(finishLaunch, 50));
+  win.webContents.on('did-fail-load', () => { launchFinished = false; win.loadFile(path.join(__dirname, 'src', 'index.html')); });
+  win.on('unresponsive', () => { if (!win.isDestroyed()) win.webContents.reload(); });
+  setTimeout(finishLaunch, 1800);
 }
 
 function updateStatus(status, detail = '') {

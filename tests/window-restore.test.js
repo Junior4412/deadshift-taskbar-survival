@@ -20,3 +20,20 @@ test('ativar pelo Windows restaura a janela',()=>{
   assert.match(main,/app\.on\('activate', restoreWindow\)/);
   assert.match(main,/win\.on\('restore'/);
 });
+
+test('janela aparece mesmo quando ready-to-show não é emitido',()=>{
+  assert.match(main,/webContents\.once\('did-finish-load'/);
+  assert.match(main,/setTimeout\(finishLaunch, 1800\)/);
+  assert.match(main,/launchFinished/);
+});
+
+test('janela fora dos monitores volta para uma área visível',()=>{
+  assert.match(main,/screen\.getAllDisplays\(\)/);
+  assert.match(main,/if \(!visible\) place\('compact'\)/);
+  assert.match(main,/win\.setOpacity\(1\)/);
+});
+
+test('renderizador sem resposta é recarregado',()=>{
+  assert.match(main,/win\.on\('unresponsive'/);
+  assert.match(main,/win\.webContents\.reload\(\)/);
+});
