@@ -15,7 +15,7 @@ function createWindow() {
   win = new BrowserWindow({
     ...sizes.compact, frame: false, transparent: true, resizable: false, alwaysOnTop: true,
     skipTaskbar: false, show: false, backgroundColor: '#00000000',
-    webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true }
+    webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, backgroundThrottling: false }
   });
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   win.once('ready-to-show', async () => {
@@ -23,7 +23,7 @@ function createWindow() {
     place(visualTest ? 'expanded' : 'compact'); win.show();
     if (visualTest) {
       setTimeout(async () => {
-        await win.webContents.executeJavaScript("document.body.className='expanded'; document.querySelector('#dashboard').style.display='flex'; document.querySelector('#combat').style.height='137px'; window.__seedVisualTest?.(); document.querySelector('[data-tab=squad]')?.click()").catch(()=>{});
+        await win.webContents.executeJavaScript("document.body.className='expanded'; document.querySelector('#dashboard').style.display='flex'; document.querySelector('#combat').style.height='137px'; window.__seedVisualTest?.(); document.querySelector('[data-tab=squad]')?.click(); window.__showOfflineTest?.()").catch(()=>{});
         await new Promise(resolve => setTimeout(resolve, 300));
         const png = (await win.webContents.capturePage()).toPNG();
         fs.writeFileSync(path.join(__dirname, 'outputs', 'visual-test.png'), png);

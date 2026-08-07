@@ -21,6 +21,8 @@ RPG idle original de sobrevivência zumbi para Windows, projetado para permanece
 - Três categorias de baús com abertura animada
 - Equipamentos visíveis diretamente nos personagens durante o combate
 - Abrigo evolutivo: muralhas, torre, enfermaria e coleta alteram sua aparência
+- Farm AFK de até 8 horas com sucata, XP, níveis, ondas, itens e baús
+- Combate contínuo mesmo com a janela minimizada
 
 ## Executar
 
