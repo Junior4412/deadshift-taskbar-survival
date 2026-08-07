@@ -27,5 +27,16 @@ test('interface possui abas geral gráficos áudio e outros',()=>{
   assert.match(html,/audio-system\.js/);
   for(const tab of ['general','graphics','audio','other'])assert.match(game,new RegExp(`'${tab}'`));
   assert.match(game,/data-setting-range/);
-  assert.match(game,/data-audio-preview/);
+  assert.match(game,/data-audio-start/);
+  assert.match(game,/data-audio-test="shot"/);
+  assert.match(game,/data-audio-test="chest"/);
+  assert.match(game,/pointerdown/);
+});
+
+test('combate e baús possuem efeitos sonoros com limite de repetição',()=>{
+  assert.match(game,/audio\.sfx\('shot'\)/);
+  assert.match(game,/audio\.sfx\('chest'\)/);
+  let source=fs.readFileSync(path.join(root,'src','audio-system.js'),'utf8');
+  assert.match(source,/minimum=\{shot:85,hit:70,click:35\}/);
+  assert.match(source,/function noise/);
 });
