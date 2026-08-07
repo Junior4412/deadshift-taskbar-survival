@@ -4,7 +4,7 @@ const path = require('path');
 const { autoUpdater } = require('electron-updater');
 
 let win;
-const sizes = { compact: { width: 920, height: 176 }, expanded: { width: 1120, height: 720 } };
+const sizes = { compact: { width: 920, height: 240 }, expanded: { width: 1120, height: 720 } };
 
 function place(mode = 'compact') {
   const area = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).workArea;
