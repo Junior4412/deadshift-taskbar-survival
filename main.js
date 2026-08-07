@@ -6,6 +6,7 @@ const { autoUpdater } = require('electron-updater');
 let win;
 let updateCheckInFlight = false;
 let updatePollTimer = null;
+let automaticUpdatesEnabled = true;
 const UPDATE_POLL_INTERVAL = 5 * 60 * 1000;
 const sizes = { compact: { width: 920, height: 240 }, expanded: { width: 1120, height: 720 } };
 
@@ -42,7 +43,7 @@ function updateStatus(status, detail = '') {
 }
 
 async function checkUpdatesSafely() {
-  if (!app.isPackaged || updateCheckInFlight) return;
+  if (!automaticUpdatesEnabled || !app.isPackaged || updateCheckInFlight) return;
   updateCheckInFlight = true;
   try {
     await autoUpdater.checkForUpdates();
@@ -77,6 +78,13 @@ ipcMain.on('window-mode', (_, mode) => place(mode === 'expanded' ? 'expanded' : 
 ipcMain.on('window-minimize', () => win.minimize());
 ipcMain.on('window-close', () => win.close());
 ipcMain.on('window-pin', (_, value) => win.setAlwaysOnTop(Boolean(value)));
+ipcMain.on('set-auto-update', (_, value) => {
+  automaticUpdatesEnabled = Boolean(value);
+  if (updatePollTimer) clearInterval(updatePollTimer);
+  updatePollTimer = automaticUpdatesEnabled ? setInterval(checkUpdatesSafely, UPDATE_POLL_INTERVAL) : null;
+  updateStatus('current', app.getVersion());
+  if (automaticUpdatesEnabled) checkUpdatesSafely();
+});
 ipcMain.on('install-update', () => autoUpdater.quitAndInstall(true, true));
 ipcMain.handle('app-version', () => app.getVersion());
 ipcMain.handle('check-update', async () => {
