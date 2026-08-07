@@ -46,6 +46,10 @@ function createWindow() {
   place('compact');
   win.setOpacity(1);
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
+  win.webContents.on('console-message', (_, level, message, line, sourceId) => {
+    if (level >= 2) console.error(`[renderer] ${message} (${sourceId}:${line})`);
+  });
+  win.webContents.on('render-process-gone', (_, details) => console.error('[renderer-gone]', details));
   win.on('restore', () => setTimeout(restoreWindow, 30));
   win.on('show', () => win.setSkipTaskbar(false));
   const finishLaunch = async () => {
