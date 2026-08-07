@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deadshift</title><link rel="stylesheet" href="style.css"></head>
+<body class="compact">
+  <main id="shell">
+    <header id="topbar">
+      <div class="brand"><i></i><span>DEADSHIFT</span><small>taskbar survival</small></div>
+      <div class="resource"><b>☣</b><span id="scrap">0</span> sucata</div>
+      <div class="resource"><b>◆</b><span id="cores">0</span> núcleos</div>
+      <div class="wave">NOITE <strong id="night">1</strong> · ONDA <strong id="wave">1</strong></div>
+      <div class="window-buttons"><button id="pause" title="Pausar">Ⅱ</button><button id="speed" title="Velocidade">1×</button><button id="expand" title="Expandir">▣</button><button id="minimize">—</button><button id="close">×</button></div>
+    </header>
+    <section id="combat">
+      <canvas id="game" width="1100" height="210"></canvas>
+      <div id="bossbar" class="hidden"><span id="bossname">ABOMINAÇÃO</span><div><i id="bosshp"></i></div></div>
+      <div id="floaters"></div>
+    </section>
+    <section id="dashboard">
+      <nav><button data-tab="squad" class="active">ESQUADRÃO</button><button data-tab="arsenal">ARSENAL</button><button data-tab="base">BASE</button><button data-tab="missions">MISSÕES</button><button data-tab="archive">ARQUIVO</button></nav>
+      <div id="panel"></div>
+    </section>
+  </main>
+  <div id="toast"></div><script src="loot-system.js"></script><script src="game.js"></script>
+</body></html>
