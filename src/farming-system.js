@@ -1,6 +1,6 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.FarmingSystem=api})(typeof globalThis!=='undefined'?globalThis:this,function(){
-const FOCUS=['dps','tank','healer','dps','rare'];
-const LABELS={dps:'DPS',tank:'TANK',healer:'CURA',rare:'RARIDADE'};
+const FOCUS=['dps','tank','healer','iris','rare'];
+const LABELS={dps:'DPS',tank:'TANK',healer:'CURA',iris:'IRIS',rare:'RARIDADE'};
 function index(map,level){return(map-1)*10+level}
 function required(map,level,mode=0){return Math.round((35+(map-1)*65+level*12)*[1.2,1.9,3,5][mode])}
 function efficiency(power,map,level,mode=0){return power/required(map,level,mode)}
