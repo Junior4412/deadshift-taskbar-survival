@@ -39,10 +39,12 @@ function place(mode = 'compact') {
 function createWindow() {
   let launchFinished = false;
   win = new BrowserWindow({
-    ...sizes.compact, frame: false, transparent: true, resizable: false, alwaysOnTop: true,
-    skipTaskbar: false, show: false, backgroundColor: '#00000000',
+    ...sizes.compact, frame: false, transparent: false, resizable: false, alwaysOnTop: true,
+    skipTaskbar: false, show: true, backgroundColor: '#080d0b', paintWhenInitiallyHidden: true,
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, backgroundThrottling: false }
   });
+  place('compact');
+  win.setOpacity(1);
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   win.on('restore', () => setTimeout(restoreWindow, 30));
   win.on('show', () => win.setSkipTaskbar(false));

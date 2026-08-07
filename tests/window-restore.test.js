@@ -37,3 +37,10 @@ test('renderizador sem resposta é recarregado',()=>{
   assert.match(main,/win\.on\('unresponsive'/);
   assert.match(main,/win\.webContents\.reload\(\)/);
 });
+
+test('janela usa composição opaca compatível com o Windows',()=>{
+  assert.match(main,/transparent: false/);
+  assert.match(main,/show: true/);
+  assert.match(main,/backgroundColor: '#080d0b'/);
+  assert.doesNotMatch(main,/backgroundColor: '#00000000'/);
+});
