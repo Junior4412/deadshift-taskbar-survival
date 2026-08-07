@@ -2,6 +2,8 @@
 
 RPG idle original de sobrevivência zumbi para Windows, projetado para permanecer junto à barra de tarefas enquanto você trabalha.
 
+**[Site oficial e download](https://deadshift-taskbar-survival.vercel.app)**
+
 ![Interface do Deadshift](site/game-ui.png)
 
 ## Recursos
