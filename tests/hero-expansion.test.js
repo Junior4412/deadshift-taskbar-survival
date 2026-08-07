@@ -18,13 +18,13 @@ test('dez novos heróis possuem arte e habilidades próprias',()=>{
     assert.match(game,new RegExp(`id:'${id}'`));
     assert.equal(P.HEROES[id].abilities.length,3);
   }
-  assert.ok(fs.existsSync(path.join(root,'assets','deadshift-heroes-expansion-a.png')));
-  assert.ok(fs.existsSync(path.join(root,'assets','deadshift-heroes-expansion-b.png')));
+  assert.ok(fs.existsSync(path.join(root,'assets','deadshift-heroes-expansion-a-v2.png')));
+  assert.ok(fs.existsSync(path.join(root,'assets','deadshift-heroes-expansion-b-v2.png')));
 });
 
-test('formação limita quatro heróis e oferece builds prontas',()=>{
-  assert.match(game,/slice\(0,4\)/);
-  assert.match(game,/S\.lineup\.length>=4/);
+test('formação limita três heróis e oferece builds prontas',()=>{
+  assert.match(game,/slice\(0,3\)/);
+  assert.match(game,/S\.lineup\.length>=3/);
   assert.match(game,/const BUILD_PRESETS=\[/);
   assert.match(game,/FARM AFK SEGURO/);
   assert.match(game,/CAÇA-CHEFES/);
