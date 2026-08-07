@@ -9,6 +9,7 @@ const NODES=[
  {id:'rapid1',name:'Fogo Coordenado',icon:'⌁',stat:'rate',value:.05,max:5,cost:2,x:72,y:55,requires:['haste1']},
  {id:'offline1',name:'Turno Fantasma',icon:'◷',stat:'offline',value:.1,max:5,cost:2,x:92,y:45,requires:['haste1']},
  {id:'chest1',name:'Caça ao Cofre',icon:'▣',stat:'chest',value:.04,max:5,cost:3,x:42,y:66,requires:['loot1']},
+ {id:'autochest1',name:'Protocolo Chave Mestra',icon:'⚙',stat:'autoChest',value:1,max:1,cost:8,x:34,y:78,requires:['chest1']},
  {id:'cube1',name:'Engenharia Reversa',icon:'◆',stat:'cube',value:.08,max:5,cost:3,x:58,y:66,requires:['loot1']},
  {id:'elite1',name:'Execução',icon:'☣',stat:'elite',value:.08,max:5,cost:4,x:18,y:78,requires:['crit1','regen1']},
  {id:'formation1',name:'Formação de Ferro',icon:'⬟',stat:'all',value:.04,max:5,cost:4,x:50,y:84,requires:['chest1','cube1']},
@@ -21,6 +22,6 @@ function unlocked(s,n){ensure(s);return n.requires.every(id=>Number(s.runes[id]|
 function cost(s,id){let n=typeof id==='string'?node(id):id,rank=n?Number(s.runes[n.id]||0):0;return n?n.cost+rank:Infinity}
 function available(s){ensure(s);return NODES.filter(n=>unlocked(s,n)&&Number(s.runes[n.id]||0)<n.max&&s.runePoints>=cost(s,n))}
 function buy(s,id){ensure(s);let n=node(id),rank=Number(s.runes[id]||0),price=cost(s,id);if(!n||rank>=n.max||!unlocked(s,n)||s.runePoints<price)return false;s.runePoints-=price;s.runes[id]=rank+1;return true}
-function bonuses(s){ensure(s);let out={attack:0,hp:0,rate:0,crit:0,scrap:0,regen:0,offline:0,chest:0,cube:0,elite:0,targetLoot:0};for(const n of NODES){let v=Number(s.runes[n.id]||0)*n.value;if(n.stat==='all'){out.attack+=v;out.hp+=v;out.rate+=v}else out[n.stat]=(out[n.stat]||0)+v}return out}
+function bonuses(s){ensure(s);let out={attack:0,hp:0,rate:0,crit:0,scrap:0,regen:0,offline:0,chest:0,autoChest:0,cube:0,elite:0,targetLoot:0};for(const n of NODES){let v=Number(s.runes[n.id]||0)*n.value;if(n.stat==='all'){out.attack+=v;out.hp+=v;out.rate+=v}else out[n.stat]=(out[n.stat]||0)+v}return out}
 return{NODES,ensure,node,unlocked,cost,available,buy,bonuses};
 });

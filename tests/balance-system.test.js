@@ -27,3 +27,11 @@ test('estado migrado nunca mantém mais de três campeões',()=>{
   B.normalizeState(state,[]);
   assert.deepEqual(state.lineup,['maya','bruno','yuri']);
 });
+
+test('nível dos campeões nunca ultrapassa 750',()=>{
+  let hero={id:'maya',level:9999,hp:999999};
+  B.normalizeHero(hero);
+  assert.equal(B.MAX_LEVEL,750);
+  assert.equal(hero.level,750);
+  assert.deepEqual(B.expectedHero('maya',9999),B.expectedHero('maya',750));
+});
