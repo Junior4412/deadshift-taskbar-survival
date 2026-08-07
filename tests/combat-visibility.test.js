@@ -17,5 +17,6 @@ test('heróis atacam qualquer inimigo visível à frente',()=>{
 
 test('tiros possuem rastro visível e cercas não são desenhadas',()=>{
   assert.match(game,/moveTo\(b\.x-18/);
-  assert.match(game,/wallLevel=S\.upgrades\.walls,w=0/);
+  assert.doesNotMatch(game,/drawBase\(\);/);
+  assert.doesNotMatch(game,/if\(S\.upgrades\.turret/);
 });
