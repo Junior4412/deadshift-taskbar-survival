@@ -1,13 +1,13 @@
 {
   "name": "deadshift-taskbar",
-  "version": "2.2.0",
+  "version": "2.7.0",
   "description": "RPG idle de sobrevivência zumbi para a barra de tarefas",
   "author": "Junior4412",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-  "test": "node --test tests/*.test.js && node --check main.js && node --check preload.js && node --check src/game.js && node --check src/progression-system.js && node --check src/offline-system.js",
-    "build": "electron-builder --win portable"
+    "test": "node --test tests/*.test.js && node --check main.js && node --check preload.js && node --check src/game.js && node --check src/progression-system.js && node --check src/recommendation-system.js && node --check src/pet-system.js && node --check src/campaign-system.js && node --check src/patch-notes.js && node --check src/offline-system.js",
+    "build": "electron-builder --win nsis"
   },
   "devDependencies": {
     "electron": "^37.2.6",
@@ -16,8 +16,35 @@
   "build": {
     "appId": "com.deadshift.taskbar",
     "productName": "Deadshift: Taskbar Survival",
-    "directories": { "output": "dist" },
-    "files": ["main.js", "preload.js", "src/**/*", "assets/**/*", "package.json"],
-    "win": { "target": "portable", "artifactName": "Deadshift-Taskbar-Survival.exe" }
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "Deadshift-Setup-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Junior4412",
+        "repo": "deadshift-taskbar-survival"
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
   }
 }

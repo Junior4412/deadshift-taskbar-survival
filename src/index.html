@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Deadshift</title><link rel="stylesheet" href="style.css"></head>
-<body class="compact">
+<title>Deadshift</title><link rel="stylesheet" href="style.css"><style>.update-status{-webkit-app-region:no-drag;border:1px solid #35483e;background:#101914;color:#82958a;padding:4px 8px;font-size:8px;cursor:default}.update-status.ready{border-color:var(--acid);color:var(--acid);cursor:pointer;box-shadow:0 0 8px #a8ef4633}.update-status.error{border-color:#8d4b3d;color:#d9957d}.item-advice{grid-column:1/-1;padding:7px 9px;border:1px solid #39483f;background:#0a100d;display:grid;grid-template-columns:auto 1fr;gap:3px 10px}.item-advice b{font-size:9px}.item-advice small{font-size:8px;color:#8b9a91}.item-advice span{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}.item-advice i{font-style:normal;font-size:8px;padding:2px 5px;background:#151e19}.item-advice .up{color:#8ff27a}.item-advice .down{color:#ef806e}.item-advice.upgrade{border-color:#4b7447;background:#102016}.item-advice.upgrade>b{color:#8ff27a}.item-advice.downgrade{border-color:#693d35}.item-advice.downgrade>b{color:#ef806e}.item-advice.sidegrade>b{color:#e4c86c}.item-advice.equipped{border-color:#55715f}.item-advice.equipped>b{color:#a8ef46}</style></head>
+<body class="compact"><link rel="stylesheet" href="patch-notes.css">
   <main id="shell">
     <header id="topbar">
       <div class="brand"><i></i><span>DEADSHIFT</span><small>taskbar survival</small></div>
       <div class="resource"><b>☣</b><span id="scrap">0</span> sucata</div>
       <div class="resource"><b>◆</b><span id="cores">0</span> núcleos</div>
-      <div class="wave">NOITE <strong id="night">1</strong> · ONDA <strong id="wave">1</strong></div>
+      <button id="update-status" class="update-status" title="Atualizações automáticas">ATUALIZANDO...</button>
+      <div class="wave"><span id="mode">NORMAL</span> · MAPA <strong id="night">1</strong>/5 · NÍVEL <strong id="wave">1</strong>/10</div>
       <div class="window-buttons"><button id="pause" title="Pausar">Ⅱ</button><button id="speed" title="Velocidade">1×</button><button id="expand" title="Expandir">▣</button><button id="minimize">—</button><button id="close">×</button></div>
     </header>
     <section id="combat">
@@ -18,9 +19,9 @@
       <div id="floaters"></div>
     </section>
     <section id="dashboard">
-      <nav><button data-tab="squad" class="active">ESQUADRÃO</button><button data-tab="skills">HABILIDADES</button><button data-tab="expedition">EXPEDIÇÃO</button><button data-tab="chests">BAÚS</button><button data-tab="arsenal">ARSENAL</button><button data-tab="base">BASE</button><button data-tab="missions">MISSÕES</button><button data-tab="archive">ARQUIVO</button></nav>
+      <nav><button data-tab="squad" class="active">ESQUADRÃO</button><button data-tab="skills">HABILIDADES</button><button data-tab="expedition">EXPEDIÇÃO</button><button data-tab="chests">BAÚS</button><button data-tab="arsenal">ARSENAL</button><button data-tab="pets">PETS</button><button data-tab="base">BASE</button><button data-tab="missions">MISSÕES</button><button data-tab="patchnotes">PATCH NOTES</button><button data-tab="archive">ARQUIVO</button></nav>
       <div id="panel"></div>
     </section>
   </main>
-  <div id="offline-report"></div><div id="toast"></div><script src="loot-system.js"></script><script src="progression-system.js"></script><script src="offline-system.js"></script><script src="game.js"></script>
-</body></html>
+  <div id="offline-report"></div><div id="toast"></div><script src="loot-system.js"></script><script src="progression-system.js"></script><script src="recommendation-system.js"></script><script src="pet-system.js"></script><script src="campaign-system.js"></script><script src="patch-notes.js"></script><script src="offline-system.js"></script><script src="game.js"></script>
+<style>.pet-card{min-height:210px}.pet-card p{clear:both;color:#8b9a91;font-size:9px;padding-top:10px;min-height:38px}.pet-portrait{font-size:30px}.pet-buffs{clear:both;border:1px solid #35483e;background:#0b120e;color:#a8ef46;font-size:9px;padding:8px;margin:8px 0}.pet-card .recycle{margin:10px 0 0 5px}.pet-owner{display:block;color:#82958a;margin-top:8px}.pet-card.selected{box-shadow:inset 0 0 25px #a8ef4618,0 0 8px #000}.item-filters{display:flex;gap:6px;margin:-5px 0 12px}.item-filters button{border:1px solid #35483e;background:#111a16;color:#91a097;padding:7px 12px;cursor:pointer;font-size:9px}.item-filters button.on{border-color:#a8ef46;background:#263a25;color:#eaffcd}.item-filters small{margin-left:7px;color:#6f8277}.item-role{position:absolute;right:8px;top:6px;border:1px solid;padding:2px 5px;font-size:7px;z-index:2}.item-role.dps{color:#ff9a69;border-color:#754533}.item-role.tank{color:#79c9dc;border-color:#385e68}.item-role.healer{color:#8ff09b;border-color:#3d7046}</style></body></html>
