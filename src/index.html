@@ -12,13 +12,15 @@
     </header>
     <section id="combat">
       <canvas id="game" width="1100" height="210"></canvas>
+      <div id="stage-label"><small>ZONA ATUAL</small><b id="stage-name">CENTRO INFECTADO</b></div>
       <div id="bossbar" class="hidden"><span id="bossname">ABOMINAÇÃO</span><div><i id="bosshp"></i></div></div>
+      <div id="ability-bar"></div>
       <div id="floaters"></div>
     </section>
     <section id="dashboard">
-      <nav><button data-tab="squad" class="active">ESQUADRÃO</button><button data-tab="arsenal">ARSENAL</button><button data-tab="base">BASE</button><button data-tab="missions">MISSÕES</button><button data-tab="archive">ARQUIVO</button></nav>
+      <nav><button data-tab="squad" class="active">ESQUADRÃO</button><button data-tab="skills">HABILIDADES</button><button data-tab="expedition">EXPEDIÇÃO</button><button data-tab="chests">BAÚS</button><button data-tab="arsenal">ARSENAL</button><button data-tab="base">BASE</button><button data-tab="missions">MISSÕES</button><button data-tab="archive">ARQUIVO</button></nav>
       <div id="panel"></div>
     </section>
   </main>
-  <div id="toast"></div><script src="loot-system.js"></script><script src="game.js"></script>
+  <div id="toast"></div><script src="loot-system.js"></script><script src="progression-system.js"></script><script src="game.js"></script>
 </body></html>
