@@ -1,0 +1,10 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const R=require('../src/recommendation-system.js');
+const item=stats=>({stats});
+test('dano e velocidade encontram o especialista correto',()=>{assert.equal(R.bestHero(item({attack:12,rate:.12,crit:.05})).id,'hana')});
+test('vida favorece o maior especialista tanque',()=>{assert.equal(R.bestHero(item({hp:250})).id,'atlas')});
+test('compara item apenas com o equipamento atual do slot',()=>{let c=R.compare(item({attack:15}),item({attack:10}),'maya');assert.equal(c.verdict,'upgrade');assert.equal(c.percent,50);assert.equal(c.stats[0].delta,5)});
+test('item sem equipamento atual é melhoria',()=>{assert.equal(R.compare(item({hp:20}),null,'bruno').verdict,'upgrade')});
+test('detecta troca pior para a classe',()=>{assert.equal(R.compare(item({hp:5}),item({hp:100}),'bruno').verdict,'downgrade')});
+test('classifica itens para filtros de função',()=>{assert.equal(R.category(item({attack:20,crit:.1})),'dps');assert.equal(R.category(item({hp:200})),'tank');assert.equal(R.category(item({healing:.3,rate:.02})),'healer')});

@@ -1,0 +1,8 @@
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.SaveSystem=api})(typeof globalThis!=='undefined'?globalThis:this,function(){
+const FORMAT='deadshift-save',VERSION=1;
+function checksum(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,'0')}
+function summary(state){return{player:state.playerName||'Sobrevivente',scrap:Number(state.scrap||0),cores:Number(state.cores||0),kills:Number(state.kills||0),mode:Number(state.campaign?.mode||0),map:Number(state.campaign?.map||1),level:Number(state.campaign?.level||1),heroes:Array.isArray(state.unlocked)?state.unlocked.length:0,items:Array.isArray(state.inventory)?state.inventory.length:0,playtime:Number(state.playtime||0)}}
+function encode(state){let payload=JSON.stringify(state),file={format:FORMAT,version:VERSION,createdAt:new Date().toISOString(),summary:summary(state),checksum:checksum(payload),payload:JSON.parse(payload)};return JSON.stringify(file,null,2)}
+function decode(text){let file;try{file=JSON.parse(text)}catch{throw new Error('Arquivo inválido: não é um save JSON')}if(file?.format!==FORMAT||!file.payload)throw new Error('Este arquivo não é um save do Deadshift');let payload=JSON.stringify(file.payload);if(file.checksum!==checksum(payload))throw new Error('O save está corrompido ou foi alterado');if(typeof file.payload!=='object'||Array.isArray(file.payload))throw new Error('Progresso inválido');return{state:file.payload,summary:file.summary||summary(file.payload),createdAt:file.createdAt}}
+return{FORMAT,VERSION,checksum,summary,encode,decode};
+});

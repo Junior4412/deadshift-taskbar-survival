@@ -1,0 +1,9 @@
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.EnemySystem=api})(typeof globalThis!=='undefined'?globalThis:this,function(){
+const DEFS={walker:{hp:34,atk:5,speed:13,reward:7,trait:'normal'},runner:{hp:24,atk:7,speed:27,reward:10,trait:'fast'},brute:{hp:115,atk:14,speed:8,reward:28,trait:'armored'},spitter:{hp:55,atk:11,speed:10,reward:18,trait:'toxic'},flyer:{hp:38,atk:10,speed:31,reward:18,trait:'flying'},ember:{hp:62,atk:13,speed:15,reward:21,trait:'fire'},exploder:{hp:44,atk:20,speed:18,reward:24,trait:'explode'},drowned:{hp:88,atk:12,speed:10,reward:22,trait:'regen'},crawler:{hp:42,atk:9,speed:34,reward:19,trait:'fast'},leech:{hp:72,atk:13,speed:16,reward:25,trait:'leech'},ashflyer:{hp:58,atk:16,speed:34,reward:29,trait:'flying-fire'},forged:{hp:155,atk:20,speed:9,reward:38,trait:'armored-fire'},frostflyer:{hp:75,atk:18,speed:32,reward:35,trait:'flying-frost'},acid:{hp:92,atk:21,speed:14,reward:37,trait:'toxic'},phase:{hp:68,atk:23,speed:28,reward:42,trait:'phase'},omega:{hp:210,atk:25,speed:11,reward:55,trait:'armored'},boss:{hp:750,atk:26,speed:6,reward:300,trait:'boss'}};
+function unlocked(pool,level){return pool.slice(0,Math.min(pool.length,1+Math.ceil(level/3)))}
+function select(pool,level,random=Math.random){let choices=unlocked(pool,level);return choices[Math.min(choices.length-1,Math.floor(random()*choices.length))]}
+function damageTaken(enemy,damage){let trait=enemy?.trait||DEFS[enemy?.type]?.trait||'';if(trait.includes('armored'))damage*=.62;if(trait==='phase'&&enemy.phaseOn)damage*=.25;return damage}
+function spawnX(width,random=Math.random){let w=Math.max(400,Number(width)||920);return Math.min(w-20,Math.max(430,w*.57)+random()*70)}
+function attackReach(trait='normal'){return trait==='toxic'?165:trait.includes('flying')?110:trait==='phase'?80:trait==='boss'?60:trait.includes('fire')?48:25}
+return{DEFS,unlocked,select,damageTaken,spawnX,attackReach};
+});

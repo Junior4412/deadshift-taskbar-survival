@@ -1,0 +1,17 @@
+.campaign-map article{background:linear-gradient(110deg,#142019,#0d1511);padding:11px;position:relative;overflow:hidden;transition:.18s}
+.campaign-map article:before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:#35493d}
+.campaign-map article:hover{border-color:#577963;background:linear-gradient(110deg,#1a2c21,#101a15);transform:translateX(3px)}
+.campaign-map article:has(button.current){border-color:#749452;box-shadow:inset 0 0 24px #a8ef460a}
+.campaign-map article:has(button.current):before{background:var(--acid);box-shadow:0 0 10px var(--acid)}
+.campaign-map article>div button:hover:not(:disabled){background:#213629;border-color:#83b655;transform:translateY(-2px)}
+.farm-advisor{background:radial-gradient(circle at 10% 0,#315d3b33,transparent 34%),linear-gradient(135deg,#14271d,#09140f);padding:14px;box-shadow:inset 0 0 28px #0005,0 8px 22px #0005}
+.farm-tip{box-shadow:inset 0 0 14px #0003}
+.farm-tip:hover{box-shadow:0 7px 18px #0007,inset 0 0 15px #a8ef460c}
+nav button{position:relative;transition:.16s}
+nav button.active:after{content:'';position:absolute;right:8px;top:50%;width:5px;height:5px;background:var(--acid);transform:translateY(-50%) rotate(45deg);box-shadow:0 0 8px var(--acid)}
+.resource{box-shadow:inset 0 0 12px #0006}.resource b{filter:drop-shadow(0 0 4px var(--acid))}
+#stage-label{box-shadow:0 5px 15px #0008,0 0 16px #a8ef4610}
+.cube-grid article,.exp-node,.skill-card{transition:.18s}.cube-grid article:hover,.exp-node:hover,.skill-card:hover{border-color:#5d7b69;transform:translateY(-2px);box-shadow:0 8px 22px #0006}
+.rune-guide{display:grid;grid-template-columns:1fr repeat(4,105px);gap:7px;align-items:stretch;margin:0 0 12px}.rune-guide>div,.rune-guide>span{border:1px solid #344b3e;background:linear-gradient(145deg,#14231b,#0b1510);padding:9px 11px}.rune-guide>div b,.rune-guide>div small,.rune-guide>span b,.rune-guide>span small{display:block}.rune-guide>div b{color:var(--acid);font-size:10px;letter-spacing:1px}.rune-guide>div small{color:#82958a;font-size:8px;margin-top:4px}.rune-guide>span{text-align:center}.rune-guide>span b{color:#eaffd3;font-size:11px}.rune-guide>span small{color:#74877c;font-size:7px;margin-top:3px}.rune-tree{background:radial-gradient(circle at 50% 8%,#3c653c35,transparent 23%),repeating-linear-gradient(0deg,#ffffff04 0 1px,transparent 1px 40px),#08100c}.rune-node{border-radius:3px;transition:.18s}.rune-node.ready{border-color:#8fd653;background:linear-gradient(145deg,#1e3b25,#112018);box-shadow:0 0 16px #91ec4930;animation:runeReady 1.8s ease-in-out infinite}.rune-node.ready:hover{transform:translate(-50%,-50%) scale(1.06);box-shadow:0 0 24px #a8ef4655}.rune-node.learned{background:linear-gradient(145deg,#24432c,#13241a)}.rune-node.locked:after{content:'BLOQUEADA';display:block;margin-top:3px;font-size:6px;color:#8b5f5f}.rune-node em{margin-top:3px}@keyframes runeReady{50%{box-shadow:0 0 22px #a8ef4648}}
+@media(max-width:900px){.rune-guide{grid-template-columns:1fr repeat(2,90px)}.rune-guide>span:nth-last-child(-n+2){display:none}}
+.compact canvas{filter:brightness(1.16) saturate(1.12) contrast(1.03)}.compact #combat:after{background:linear-gradient(90deg,#07100b75,transparent 14%,transparent 86%,#07100b55)}.compact #stage-label{top:10px}.compact #ability-bar{bottom:9px}.compact #ability-bar button{width:64px;height:50px}
